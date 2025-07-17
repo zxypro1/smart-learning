@@ -41,7 +41,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        <title>智学堂 | AI 自学、网课制作与分享平台</title>
+        <title>Smart Learning | AI 自学、网课制作与分享平台</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"

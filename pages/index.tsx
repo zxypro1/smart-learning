@@ -7,7 +7,7 @@ export default function HomePage() {
     <Box style={{ maxWidth: 700, margin: '0 auto', paddingTop: 64 }}>
       <AnimatedLogo />
       <Text ta="center" size="xl" style={{ color: '#fff', marginBottom: 16 }}>
-        智学堂
+        Smart Learning
       </Text>
       <Text ta="center" size="lg" style={{ color: '#fff', marginBottom: 32 }}>
         AI 自学、网课制作与分享平台
