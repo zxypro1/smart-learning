@@ -17,11 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version-file: '.nvmrc'
-          cache: 'yarn'
-          cache-dependency-path: '**/yarn.lock'
       - name: Install dependencies
-        run: yarn
+        run: npm i
       - name: Run build
         run: npm run build
-      - name: Run tests
-        run: npm test

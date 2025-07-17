@@ -3,7 +3,7 @@ import { useCourseStore } from '../Search/courseStore';
 import { useDisclosure } from '@mantine/hooks';
 import { useRouter } from 'next/router';
 import { useAuth } from '../Auth/AuthContext';
-import { IconLogout, IconUser, IconHome, IconBook, IconShoppingCart, IconStar, IconMessages } from '@tabler/icons-react';
+import { IconLogout, IconUser, IconHome, IconBook, IconShoppingCart, IconStar, IconMessages, IconBrandGithub } from '@tabler/icons-react';
 import { showAppNotification } from '../NotificationDisplay';
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -62,28 +62,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </UnstyledButton>
               ))}
             </Group>
-            {isAuthenticated ? (
-              <Menu shadow="md" width={200}>
-                <Menu.Target>
-                  <Avatar src={avatarUrl} color="blue" radius="xl" style={{ cursor: 'pointer' }}>
-                    {!avatarUrl && <IconUser size={24} />}
-                  </Avatar>
-                </Menu.Target>
+            <Group>
+              <UnstyledButton
+                onClick={() => window.open('https://github.com/zxypro1/smart-learning', '_blank')}
+              >
+                <IconBrandGithub size={24} color="white" />
+              </UnstyledButton>
+              {isAuthenticated ? (
+                <Menu shadow="md" width={200}>
+                  <Menu.Target>
+                    <Avatar src={avatarUrl} color="blue" radius="xl" style={{ cursor: 'pointer' }}>
+                      {!avatarUrl && <IconUser size={24} />}
+                    </Avatar>
+                  </Menu.Target>
 
-                <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconUser size={14} />} onClick={() => router.push('/profile')} disabled={isLoading}>
-                    个人设置
-                  </Menu.Item>
-                  <Menu.Item leftSection={<IconLogout size={14} />} onClick={handleLogout} disabled={isLoading}>
-                    登出
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            ) : (
-              <Button variant="outline" color="white" onClick={() => router.push('/auth')}>
-                登录
-              </Button>
-            )}
+                  <Menu.Dropdown>
+                    <Menu.Item leftSection={<IconUser size={14} />} onClick={() => router.push('/profile')} disabled={isLoading}>
+                      个人设置
+                    </Menu.Item>
+                    <Menu.Item leftSection={<IconLogout size={14} />} onClick={handleLogout} disabled={isLoading}>
+                      登出
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              ) : (
+                <Button variant="outline" color="white" onClick={() => router.push('/auth')}>
+                  登录
+                </Button>
+              )}
+            </Group>
           </Group>
         </Group>
       </AppShell.Header>
