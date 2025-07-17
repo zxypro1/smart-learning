@@ -109,7 +109,7 @@ export function SearchInput() {
       const outline = parsedResponse.chapters;
 
       // 先初始化 courseData，所有章节 content 为空，并设置状态为 pending
-      setCourseData((outline as any[]).map((item: any) => ({ ...item, content: '', status: 'pending' })));
+      setCourseData((outline as any[]).map((item: any) => ({ ...item, status: 'pending', type: typeof item.type === 'string' ? parseInt(item.type, 10) : item.type })));
 
       const generatedChapters: any[] = []; // 用于存储已生成章节的内容，作为后续章节的上下文
 

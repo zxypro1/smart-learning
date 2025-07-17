@@ -3,6 +3,8 @@ import { Pool } from 'pg';
 import { authenticateToken, AuthenticatedRequest } from '../../utils/auth';
 import { IncomingForm } from 'formidable';
 import fs from 'fs';
+import path from 'path';
+import os from 'os';
 
 export const config = {
   api: {
@@ -37,7 +39,12 @@ async function importCourseHandler(req: AuthenticatedRequest, res: NextApiRespon
 
     const client = await pool.connect();
     try {
-      const fileContent = fs.readFileSync(file.filepath, 'utf8');
+      const trustedDir = os.tmpdir();
+      const resolvedPath = path.resolve(file.filepath);
+      if (!resolvedPath.startsWith(trustedDir)) {
+        return res.status(400).json({ error: 'Invalid file path' });
+      }
+      const fileContent = fs.readFileSync(resolvedPath, 'utf8');
       const { course, chapters } = JSON.parse(fileContent);
 
       await client.query('BEGIN');

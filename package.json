@@ -25,9 +25,7 @@
     "@mantine/core": "^8.1.3",
     "@mantine/hooks": "^8.1.3",
     "@mantine/notifications": "^8.1.3",
-    "@mermaid-js/mermaid-cli": "^11.6.0",
     "@next/bundle-analyzer": "^15.1.5",
-    "@react-pdf/renderer": "^4.3.0",
     "@sparticuz/chromium-min": "^138.0.1",
     "@tabler/icons-react": "^3.28.1",
     "@types/formidable": "^3.4.5",
@@ -47,7 +45,6 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-markdown": "^10.1.0",
-    "react-pdf-html": "^2.1.3",
     "rehype-highlight": "^7.0.2",
     "rehype-katex": "^7.0.1",
     "rehype-mermaid": "^3.0.0",
@@ -55,7 +52,6 @@
     "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
     "remark-mermaidjs": "^7.0.0",
-    "texsvg": "^2.3.1",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
