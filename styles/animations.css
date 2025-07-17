@@ -1,0 +1,14 @@
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: -200% 50%; /* Changed to move from left to right */
+  }
+}
+
+.gradient-progress-bar {
+  background-size: 200% 100%;
+  background-image: linear-gradient(to right, var(--mantine-color-grape-5), var(--mantine-color-cyan-5), var(--mantine-color-grape-5));
+  animation: gradientAnimation 3s linear infinite;
+}

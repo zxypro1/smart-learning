@@ -1,0 +1,18 @@
+.title {
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -2px;
+  text-align: center;
+  background: linear-gradient(90deg, #845ef7, #3bc9db, #845ef7);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-gradient 5s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes text-gradient {
+  to {
+    background-position: 200% center;
+  }
+}

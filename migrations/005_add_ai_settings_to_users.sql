@@ -1,0 +1,3 @@
+ALTER TABLE users
+ADD COLUMN ai_model TEXT,
+ADD COLUMN ai_api_key TEXT;
