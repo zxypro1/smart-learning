@@ -19,22 +19,11 @@ import {
   Paper,
   Select,
   Stepper,
-  Text ,
+  Text,
   Textarea,
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { 
-  Document, 
-  Page, 
-  Text as RecText, 
-  View, 
-  StyleSheet, 
-  render,
-  Font, 
-  PDFDownloadLink} from '@react-pdf/renderer';
-import { marked } from 'marked';
-import Html from 'react-pdf-html';
 import { useAuth } from '../components/Auth/AuthContext'; // Import useAuth
 import { showAppNotification } from '../components/NotificationDisplay';
 
@@ -46,101 +35,6 @@ interface ErrorBoundaryState {
   hasError: boolean;
   error: Error | null;
 }
-
-Font.register({
-  family: 'NotoSansSC',
-  src: '/fonts/NotoSansSC-Regular.ttf',
-});
-
-const styles = StyleSheet.create({
-  page: {
-    flexDirection: 'column',
-    backgroundColor: '#FFFFFF',
-    padding: 30,
-    fontFamily: 'NotoSansSC',
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-    flexGrow: 1,
-    fontFamily: 'NotoSansSC',
-  },
-  title: {
-    fontSize: 24,
-    textAlign: 'center',
-    marginBottom: 20,
-    fontFamily: 'NotoSansSC',
-  },
-  heading: {
-    fontSize: 18,
-    marginBottom: 10,
-    fontFamily: 'NotoSansSC',
-  },
-  text: {
-    fontSize: 12,
-    marginBottom: 5,
-    fontFamily: 'NotoSansSC',
-  },
-  html: {
-    fontSize: 12,
-    marginBottom: 5,
-    fontFamily: 'NotoSansSC',
-  },
-});
-
-interface Chapter {
-  charpter: number;
-  charpter_title: string;
-  content: string;
-  type: string;
-  score: number;
-}
-
-interface CourseData {
-  id: string;
-  name: string;
-  description: string;
-  tags: string[];
-}
-
-interface PdfDocumentProps {
-  course: CourseData;
-  chapters: Chapter[];
-}
-
-interface PdfDocumentProps {
-  course: CourseData;
-  chapters: Chapter[];
-}
-
-const PdfDocument = ({ course, chapters }: PdfDocumentProps) => {
-  return (
-    <Document>
-      <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <RecText style={styles.title}>{course.name || ''}</RecText>
-          {course.description && <Text style={styles.text}>{course.description || ''}</Text>}
-          {Array.isArray(course.tags) && course.tags.length > 0 && (
-            <RecText style={styles.text}>Tags: {course.tags.join(', ') || ''}</RecText>
-          )}
-        </View>
-        {chapters.filter(Boolean).map((chapter, idx) => (
-          <View key={chapter.charpter ?? idx} style={styles.section}>
-            <Text style={styles.heading}>{chapter.charpter_title || ''}</Text>
-            {chapter.content && chapter.content.trim() !== '' && (() => {
-              const htmlContent = String(marked(chapter.content));
-              return htmlContent.trim() !== '' ? (
-                <Html style={styles.html}>
-                  {htmlContent}
-                </Html>
-              ) : null;
-            })()}
-          </View>
-        ))}
-      </Page>
-    </Document>
-  );
-};
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { hasError: false, error: null };
@@ -169,7 +63,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
       </div>
     ) : (
       this.props.children
-    );
+    ); // 现在可以安全访问 children
   }
 }
 
@@ -356,7 +250,7 @@ export default function CoursePage() {
     }
   }, [active, chapters, id, token]);
 
-  const handleExportCourse = async (format: 'json' | 'markdown') => {
+  const handleExportCourse = async (format: 'json' | 'markdown' | 'pdf') => {
     if (!id) {
       return;
     }
@@ -406,46 +300,6 @@ export default function CoursePage() {
       });
     } finally {
       setIsExporting(false); // Set loading state to false
-    }
-  };
-
-  const handleExportPdfClient = async () => {
-    if (!course || !chapters || !Array.isArray(chapters) || chapters.length === 0) {
-      showAppNotification({
-        title: '错误',
-        message: '课程或章节信息缺失，无法导出PDF。',
-        c: 'red',
-      });
-      return;
-    }
-
-    // Also ensure that essential properties of course are not null
-    if (!course.name || !course.description) {
-      showAppNotification({
-        title: '错误',
-        message: '课程信息不完整，无法导出PDF。',
-        c: 'red',
-      });
-      return;
-    }
-
-    setIsExporting(true);
-    try {
-      render(<PdfDocument course={course} chapters={chapters} />, `${course.name}.pdf`);
-      showAppNotification({
-        title: '成功',
-        message: '课程已成功导出为 PDF！',
-        c: 'green',
-      });
-    } catch (error: any) {
-      console.error('Failed to export PDF:', error);
-      showAppNotification({
-        title: '错误',
-        message: error.message || '导出PDF失败。',
-        c: 'red',
-      });
-    } finally {
-      setIsExporting(false);
     }
   };
 
@@ -836,12 +690,6 @@ export default function CoursePage() {
           <Button variant="outline" onClick={() => handleExportCourse('markdown')} loading={isExporting}>
             导出为 Markdown
           </Button>
-          <PDFDownloadLink document={<PdfDocument course={course} chapters={chapters} />} >
-            <Button variant="outline" loading={isExporting}>
-              导出为 PDF (客户端)
-            </Button>
-          </PDFDownloadLink>
-          
           
 
           <Stepper active={active} onStepClick={setActive} orientation="vertical" mt="md">
