@@ -15,6 +15,16 @@ export default function ForumPostPage() {
   const { isAuthenticated, token } = useAuth();
   const router = useRouter();
   const { id } = router.query;
+  const isValidId = typeof id === 'string' && /^[a-zA-Z0-9_-]+$/.test(id); // Validate `id` format
+  if (!isValidId) {
+    showAppNotification({
+      title: '错误',
+      message: '无效的帖子 ID。',
+      c: 'red',
+    });
+    setLoading(false);
+    return;
+  }
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState<any>(null);
   const [newCommentContent, setNewCommentContent] = useState('');
@@ -38,7 +48,7 @@ export default function ForumPostPage() {
 
     const fetchPost = async () => {
       try {
-        const res = await fetch(`/api/forum/posts/${id}`, {
+        const res = await fetch(`/api/forum/posts/${encodeURIComponent(id)}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
