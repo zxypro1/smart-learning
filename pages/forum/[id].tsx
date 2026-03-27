@@ -38,6 +38,16 @@ export default function ForumPostPage() {
 
     const fetchPost = async () => {
       try {
+        if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+          showAppNotification({
+            title: '错误',
+            message: '无效的帖子 ID。',
+            c: 'red',
+          });
+          router.push('/forum');
+          return;
+        }
+
         const res = await fetch(`/api/forum/posts/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -85,6 +95,15 @@ export default function ForumPostPage() {
 
     setIsSubmittingComment(true);
     try {
+      if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+        showAppNotification({
+          title: '错误',
+          message: '无效的帖子 ID。',
+          c: 'red',
+        });
+        return;
+      }
+
       const res = await fetch(`/api/forum/posts/${id}/comments`, {
         method: 'POST',
         headers: {
